@@ -10,6 +10,8 @@ class Web:
                     self.walkers = self.random_web(num_walkers=num_walkers)
                 case "polygon":
                     self.walkers = self.polygon_web(num_walkers=num_walkers)
+                case "spiral":
+                    self.walkers = self.spiral_web(num_walkers=num_walkers)
                 case _:
                     self.walkers = self.random_web(num_walkers=num_walkers)
         else:
@@ -35,7 +37,20 @@ class Web:
             ws.append(w)
             angle += angleIncrement
         return ws
-
+    def spiral_web(self,num_walkers=5,radius=300):
+        angleIncrement = 360 / num_walkers 
+        ws = [] 
+        angle = 0
+        current_radius = 0
+        for i in range(0, num_walkers):
+            x = current_radius * math.cos(math.radians(angle))
+            y = current_radius * math.sin(math.radians(angle))
+            position = [x, y]
+            w = Walker(position)
+            ws.append(w)
+            angle += angleIncrement
+            current_radius += radius / num_walkers
+        return ws
     def connect(self):
         for i in range(len(self.walkers)):
             for j in range(i + 1, len(self.walkers)):
