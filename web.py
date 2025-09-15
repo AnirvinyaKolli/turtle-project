@@ -39,8 +39,4 @@ class Web:
     def connect(self):
         for i in range(len(self.walkers)):
             for j in range(i + 1, len(self.walkers)):
-                w1 = self.walkers[i]
-                w2 = self.walkers[j]
-                w1.turt.pencolor((random.random(), random.random(), random.random()))
-                w1.turt.goto(w2.pos)
-                w1.turt.goto(w1.pos)
+                self.walkers[i].move(self.walkers[j].pos)

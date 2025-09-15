@@ -13,7 +13,7 @@ background.bgcolor("black")
 background.title("Turtle Project")
 background.screensize(400, 400)
 
-web = Web("polygon", 100)
+web = Web(web_type="polygon", num_walkers=5)
 web.connect()
 
 turtle.done()
