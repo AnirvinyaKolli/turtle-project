@@ -4,28 +4,27 @@ Sai Anirvinya Kolli
 My turtle project
 '''
 from walker import Walker
-from web import Web
+from webs import Web, SpiralWeb, PolygonWeb
 import turtle
-import time
 
 background = turtle.Screen()
 background.bgcolor("black")
 background.title("Turtle Project")
 background.screensize(400, 400)
 
-web = Web(web_type="random", num_walkers=20)
+web = Web(num_walkers=10, bounds=400)
 web.connect()
-time.sleep(3)
+background.textinput("Pause", "Press Enter to continue...")
 background.clear()
 background.bgcolor("black")
 
-spiral_web = Web(web_type="spiral", num_walkers=20) 
+spiral_web = SpiralWeb(num_walkers=10, bounds=400)
 spiral_web.connect()
-time.sleep(3)
+background.textinput("Pause", "Press Enter to continue...")
 background.clear()
 background.bgcolor("black")
 
-polygon_web = Web(web_type="polygon", num_walkers=9)
+polygon_web = PolygonWeb(num_walkers=9, bounds=400)
 polygon_web.connect()
 
 turtle.done()
