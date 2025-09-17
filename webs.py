@@ -32,16 +32,12 @@ class SpiralWeb(Web):
        current_radius = 0
        for i in range(0, num_walkers):
             x = current_radius * math.cos(math.radians(angle))
-            print(f"Cos = {math.cos(math.radians(angle))}")
             y = current_radius * math.sin(math.radians(angle))
-            print(f"Sin = {math.sin(math.radians(angle))}")
             position = [x, y]
             w = Walker(position)
             ws.append(w)
-            print (f"Current Radius pre inc = {current_radius}, {i}")
             angle += angleIncrement
             current_radius += bounds / num_walkers
-            print (f"Current Radius = {current_radius}")
        return ws
 
 class PolygonWeb(Web):
