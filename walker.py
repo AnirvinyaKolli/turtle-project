@@ -5,7 +5,7 @@ class Walker:
     def __init__(self, pos):
         self.pos = pos
         self.turt = turtle.Turtle()
-        self.turt.color("white")
+        self.turt.color("purple")
         self.turt.penup()
         self.turt.speed(0)
         self.turt.goto(self.pos)
