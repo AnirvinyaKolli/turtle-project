@@ -5,26 +5,41 @@ My turtle project
 '''
 from walker import Walker
 from webs import Web, SpiralWeb, PolygonWeb
+import random
 import turtle
+import time 
 
+# Defines the types of webs 
+web_types = ['spiral', 'random', 'polygon']
+
+# Sets up screen 
 background = turtle.Screen()
 background.bgcolor("black")
 background.title("Turtle Project")
 background.screensize(400, 400)
 
-web = Web(num_walkers=10, bounds=400)
-web.connect()
-background.textinput("Pause", "Press Enter to continue...")
-background.clear()
-background.bgcolor("black")
+# Main loop
+while True:
 
-spiral_web = SpiralWeb(num_walkers=10, bounds=400)
-spiral_web.connect()
-background.textinput("Pause", "Press Enter to continue...")
-background.clear()
-background.bgcolor("black")
+    # Defining random values
+    choice = random.choice(web_types) 
+    rand_num_walkers = random.randint(6, 15)
+    web = None
+    match choice:
+        case 'spiral':
+            web = SpiralWeb(num_walkers=rand_num_walkers)
+        case 'random':
+            web = Web(num_walkers=rand_num_walkers)
+        case 'polygon':
+            web = PolygonWeb(num_walkers=rand_num_walkers)
 
-polygon_web = PolygonWeb(num_walkers=9, bounds=400)
-polygon_web.connect()
+    # Connections
+    web.connect()
+
+    # Pause and screen reset
+    time.sleep(1)
+    background.clear()
+    background.bgcolor("black")
+
 
 turtle.done()
