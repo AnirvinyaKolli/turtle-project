@@ -4,13 +4,13 @@ Sai Anirvinya Kolli
 My turtle project
 '''
 from walker import Walker
-from webs import Web, SpiralWeb, PolygonWeb, WaveWeb
+from webs import *
 import random
 import turtle
 import time 
 
 # Defines the types of webs 
-web_types = ['spiral', 'random', 'polygon', "wave"]
+web_types = ['spiral', 'random', 'polygon', 'wave' , 'constellation']
 
 # Sets up screen 
 background = turtle.Screen()
@@ -34,8 +34,13 @@ while True:
             web = PolygonWeb(num_walkers=rand_num_walkers)
         case 'wave':
             web = WaveWeb(num_walkers=rand_num_walkers)
+        case 'constellation':
+            web = ConstellationWeb(num_walkers=rand_num_walkers)
+        case _:
+            web = Web(num_walkers=rand_num_walkers)
 
     # Connections
+    web.defineColors()
     web.connect()
 
     # Pause and screen reset

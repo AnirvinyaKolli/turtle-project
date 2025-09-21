@@ -5,7 +5,7 @@ import math
 # Web parent class 
 class Web:
 
-    def __init__(self,num_walkers=5, bounds = 400, walkers=None):
+    def __init__(self,num_walkers=5, bounds = 300, walkers=None):
 
         # Generates walkers if not given
         if walkers is None:
@@ -19,16 +19,21 @@ class Web:
         ws = [] 
         for i in range(0, num_walkers):
             position = [random.randint(-bounds, bounds), random.randint(-bounds, bounds)]
-            w = Walker(position)
-            ws.append(w)
+            ws.append(Walker(position))
         return ws
             
     def connect(self):
-
         # Web connection drawing
-        for i in range(len(self.walkers)):
-            for j in range(i + 1, len(self.walkers)):
-                self.walkers[i].move(self.walkers[j].pos)
+        targets = self.walkers.copy()
+        for walker in self.walkers:
+            walker.connect(targets)
+            targets.remove(walker)
+    
+    def defineColors(self):
+        prev_color = None
+        for walker in self.walkers:
+            walker.set_color(prev_color)
+            prev_color = walker.color
 
 # Spiral extension of web
 class SpiralWeb(Web):
@@ -69,8 +74,7 @@ class PolygonWeb(Web):
             x = bounds * math.cos(math.radians(angle))
             y = bounds * math.sin(math.radians(angle))
             position = [x, y]
-            w = Walker(position)
-            ws.append(w)
+            ws.append(Walker(position))
             angle += angleIncrement
         return ws
 
@@ -83,14 +87,65 @@ class WaveWeb(Web):
         self.frequency = frequency
         super().__init__(num_walkers=num_walkers, bounds=bounds)
 
-    # Wave web generator override
+    # Wave web generator
     def generate_web(self, num_walkers=5, bounds=300):
         ws = []
         x_spacing = bounds * 2 / (num_walkers - 1)  # Spread across -bounds to +bounds
         for i in range(num_walkers):
             x = -bounds + i * x_spacing
-            y = self.amplitude * math.sin(self.frequency * math.radians(x))
+            # Use a full sine wave cycle across all walkers
+            phase = (i / (num_walkers - 1)) * 2 * math.pi * self.frequency
+            y = self.amplitude * math.sin(phase)
             position = [x, y]
             w = Walker(position)
             ws.append(w)
         return ws
+
+
+
+
+class ConstellationWeb(Web):
+    def __init__(self, num_walkers=5, bounds=300):
+        super().__init__(num_walkers=num_walkers, bounds=bounds)
+
+        self.threshold = self.find_threshold(num_walkers, bounds)
+        self.walker_branches = []
+        for walker in self.walkers:
+            branches = self.find_branches(walker)
+            self.walker_branches.append([walker, branches])
+
+    def defineColors(self):
+        for walker in self.walkers:
+            walker.color = "yellow"
+
+    def find_threshold(self, num_walkers, bounds):
+        bias = 3
+        threshold = bounds / math.sqrt(math.pi * (num_walkers - 1))
+        return threshold * bias
+
+    def find_branches(self, walker):
+        bw = []
+        dists = {}
+        distances = []
+        for other in self.walkers:
+            if other == walker:
+                continue
+            distance = math.sqrt((walker.pos[0]-other.pos[0])**2 + (walker.pos[1] - other.pos[1])**2)
+            dists[distance] = other
+            distances.append(distance)
+        distances.sort()
+        if distances[0] > self.threshold and distances is not None and distances[0]:
+            bw.append(dists[distances[0]])
+            return bw
+        for distance in distances:
+            if distance < self.threshold:
+                bw.append(dists[distance])
+            else:
+                return bw
+    
+    def connect(self):
+        for wb in self.walker_branches:
+            wb[0].turt.color(wb[0].color)
+            for branch in wb[1]:
+                wb[0].move(branch.pos)
+            wb[0].turt.color("white")
