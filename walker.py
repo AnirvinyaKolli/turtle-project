@@ -14,6 +14,7 @@ class Walker:
         self.turt.pendown()
         self.color = (1, 0, 0)  
 
+    # Chooses color based on previous color
     def set_color(self, prev_rgb, step=0.05):
         if prev_rgb is None:
             self.color = (1, 0, 0) 

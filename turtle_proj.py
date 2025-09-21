@@ -18,8 +18,17 @@ background.bgcolor("black")
 background.title("Turtle Project")
 background.screensize(400, 400)
 
+# Defines quit function
+quit = False
+def end_main_loop():
+    global quit
+    quit = True
+
+background.listen()
+background.onkey(end_main_loop, "q")
+
 # Main loop
-while True:
+while not quit:
 
     # Defining random values
     choice = random.choice(web_types) 
@@ -48,5 +57,5 @@ while True:
     background.clear()
     background.bgcolor("black")
 
-
-turtle.done()
+    
+background.bye()

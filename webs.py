@@ -103,26 +103,30 @@ class WaveWeb(Web):
 
 
 
-
+# Constellation extension of web
 class ConstellationWeb(Web):
     def __init__(self, num_walkers=5, bounds=300):
         super().__init__(num_walkers=num_walkers, bounds=bounds)
 
+        # Sets threshold and branches
         self.threshold = self.find_threshold(num_walkers, bounds)
         self.walker_branches = []
         for walker in self.walkers:
             branches = self.find_branches(walker)
             self.walker_branches.append([walker, branches])
 
+    # Defines all walker colors to yellow
     def defineColors(self):
         for walker in self.walkers:
             walker.color = "yellow"
 
+    # Finds threshold distance for connections
     def find_threshold(self, num_walkers, bounds):
         bias = 3
         threshold = bounds / math.sqrt(math.pi * (num_walkers - 1))
         return threshold * bias
 
+    # Finds branches for each walker
     def find_branches(self, walker):
         bw = []
         dists = {}
@@ -143,6 +147,7 @@ class ConstellationWeb(Web):
             else:
                 return bw
     
+    # Connect method override
     def connect(self):
         for wb in self.walker_branches:
             wb[0].turt.color(wb[0].color)
